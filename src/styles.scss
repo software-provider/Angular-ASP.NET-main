@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+@import '~@swimlane/ngx-datatable/themes/bootstrap.css';
+
+.ngx-datatable.bootstrap .datatable-body .datatable-body-row .datatable-body-cell {
+    padding: 0.2rem !important;
+}
+
+.ngx-datatable.bootstrap .datatable-footer {
+    overflow: hidden;
+}

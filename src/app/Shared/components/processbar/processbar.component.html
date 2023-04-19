@@ -1,0 +1,22 @@
+<div class="modal-body">
+    <div class="card text-center border-0">
+        <h6>Currently in process</h6>
+        <div class="row">
+            <div class="col text-center border border-primary p-0">
+                <div [class.active]="stepSize >= 0">Process: {{ msg[0] }}</div>
+            </div>
+            <div class="col text-center border border-primary p-0">
+                <div [class.active]="stepSize >= 1">Process: {{ msg[1] }}</div>
+            </div>
+            <div class="col text-center border border-primary p-0">
+                <div [class.active]="stepSize >= 2">Process: {{ msg[2] }}</div>
+            </div>
+            <div class="col text-center border border-primary p-0">
+                <div [class.active]="stepSize >= 3">Process: {{ msg[3] }}</div>
+            </div>
+        </div>
+        <form id="form" *ngIf="stepSize > 3">           
+            <button type="button" class="btn btn-primary mt-2" (click)="activeModal.close()">Close</button>
+        </form>
+    </div>
+</div>

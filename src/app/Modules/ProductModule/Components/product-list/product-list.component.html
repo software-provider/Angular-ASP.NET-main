@@ -1,0 +1,111 @@
+<h4 class="my-4">Product List</h4>
+<a href="product/add" class="btn btn-primary">Add</a>
+
+<div class="alert alert-success my-2" role="alert" *ngIf="isDeleted">
+    Product deleted Sucessfuly.
+</div>
+<div class="alert alert-success my-2" role="alert" *ngIf="isSaved">
+    All Product are saved Sucessfuly.
+</div>
+<form class="my-3">
+    <h6>Filters:</h6>
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Filter by EMP" [(ngModel)]="filterEMP" (keyup)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+            <select class="form-control" placeholder="Filter by Responce Type" [(ngModel)]="filterResponceType" (change)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+                <option value="">Both</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+            </select>
+        </div>
+        <div class="col">
+            <label class="form-check-label">View Responded</label> &nbsp;
+            <input type="checkbox" class="form-check-label" [(ngModel)]="filterViewResponded" (change)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+            <label class="form-check-label">CLosed</label> &nbsp;
+            <input type="checkbox" class="form-check-label" [(ngModel)]="filterCLosed" (change)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+        </div>
+    </div>
+</form>
+<ngx-datatable #mydatatable class="bootstrap" [rows]="rows" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force"
+    [headerHeight]="40" [summaryPosition]="'bottom'" [footerHeight]="40" [limit]="20" [rowHeight]="50"
+    [reorderable]="true" [rowClass]="getRowClass">
+    <ngx-datatable-column name="id" prop="Id" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>            
+            {{ value }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="EMP" prop="EMP" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Suffix" prop="Suffix" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Start Date" prop="StartDate" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value | date:"yyyy-MM-dd"}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Amount" prop="Amount" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Responce Type" prop="ResponceType" [sortable]="true">
+        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+            <span title="Double click to edit" (dblclick)="editing[rowIndex + '-ResponceType'] = true"
+                *ngIf="!editing[rowIndex + '-ResponceType']">
+                {{ value }}
+            </span>
+            <select *ngIf="editing[rowIndex + '-ResponceType']" (blur)="editing[rowIndex + '-ResponceType'] = false"
+                (change)="updateValue($event, 'ResponceType', rowIndex)" [value]="value" class="form-control">
+                <option value="A">A</option>
+                <option value="B">B</option>
+            </select>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Responce Date" prop="ResponceDate" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value | date:"yyyy-MM-dd"}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Comment" prop="Comment" [sortable]="true">
+        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+            <span title="Double click to edit" (dblclick)="editing[rowIndex + '-Comment'] = true"
+                *ngIf="!editing[rowIndex + '-Comment']">
+                {{ value }}
+            </span>
+            <input autofocus (blur)="updateValue($event, 'Comment', rowIndex)" *ngIf="editing[rowIndex + '-Comment']" type="text"
+                [value]="value"  class="form-control"/>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Edit By" prop="EditBy" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Action" prop="Id">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template class="m-0 p-0">
+            <a class="btn btn-sm me-1 text-primary" href="/product/view/{{value}}">View</a>
+            <button class="btn btn-sm me-1 text-primary" (click)="Delete(value)">Delete</button>
+            <!-- <a href="#" (click)="Delete(value)">Delete</a> -->
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-footer>
+        <ng-template ngx-datatable-footer-template let-rowCount="rowCount">
+                <div class="col-4 ps-3">{{ rowCount }} Rows</div>
+                <div class="col-8 text-end pe-3">
+                    <button class="btn btn-sm btn-success me-1" (click)="exportDatas('xls')">Excel</button>
+                    <button class="btn btn-sm btn-danger me-1" (click)="exportDatas('pdf')">PDF</button>
+                    <button class="btn btn-sm btn-primary" (click)="Save()">Save</button>
+                </div>
+        </ng-template>
+      </ngx-datatable-footer>
+</ngx-datatable>

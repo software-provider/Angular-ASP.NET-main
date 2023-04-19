@@ -1,0 +1,22 @@
+<h4 class="my-4">Login</h4>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
+    <div class="mb-3 mt-3">
+        <label for="Email" class="form-label">Email:</label>
+        <input type="text" class="form-control" id="Email" placeholder="Enter Email" name="Email" formControlName="Email">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['Email'].invalid && (FormElement['Email'].dirty || FormElement['Email'].touched)">
+            Please enter a valid Email.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="Password" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="Password" placeholder="Enter Password" name="Password"
+            formControlName="Password">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['Password'].invalid && (FormElement['Password'].dirty || FormElement['Password'].touched)">
+            Please enter a valid Password.
+        </div>
+    </div>
+    <button type="submit" class="me-1 btn btn-primary" [disabled]="!loginForm.valid">Login</button>
+</form>

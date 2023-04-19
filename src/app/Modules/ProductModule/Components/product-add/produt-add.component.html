@@ -1,0 +1,78 @@
+<h4 class="my-4">Add New Product</h4>
+
+<div class="alert alert-success my-2" role="alert"
+    *ngIf="formsubmited">
+    Product Saved Sucessfuly.
+</div>
+
+<div class="alert alert-danger my-2" role="alert"
+    *ngIf="showError && errorMessage.length > 0">
+    {{ errorMessage }}
+</div>
+
+<form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm)">
+    <div class="mb-3 mt-3">
+        <label for="EMP" class="form-label">EMP:</label>
+        <input type="text" class="form-control" id="EMP" placeholder="Enter EMP" name="EMP" formControlName="EMP">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['EMP'].invalid && (FormElement['EMP'].dirty || FormElement['EMP'].touched)">
+            Please enter a valid EMP.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="Suffix" class="form-label">Suffix:</label>
+        <input type="text" class="form-control" id="Suffix" placeholder="Enter Suffix" name="Suffix"
+            formControlName="Suffix">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['Suffix'].invalid && (FormElement['Suffix'].dirty || FormElement['Suffix'].touched)">
+            Please enter a valid category.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="StartDate" class="form-label">Start Date:</label>
+        <input type="date" class="form-control" id="StartDate" placeholder="Enter StartDate" name="StartDate"
+            formControlName="StartDate">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['StartDate'].invalid && (FormElement['StartDate'].dirty || FormElement['StartDate'].touched)">
+            Please enter a valid Start Date.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="Amount" class="form-label">Amount:</label>
+        <input type="text" class="form-control" id="Amount" placeholder="Enter Amount" name="Amount"
+            formControlName="Amount">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['Amount'].invalid && (FormElement['Amount'].dirty || FormElement['Amount'].touched)">
+            Please enter a valid Amount.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="ResponceType" class="form-label">Responce Type:</label>
+        <input type="text" class="form-control" id="ResponceType" placeholder="Enter ResponceType" name="ResponceType"
+            formControlName="ResponceType">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['ResponceType'].invalid && (FormElement['ResponceType'].dirty || FormElement['ResponceType'].touched)">
+            Please enter a valid Responce Type.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="ResponceDate" class="form-label">Responce Date:</label>
+        <input type="date" class="form-control" id="ResponceDate" placeholder="Enter ResponceDate" name="ResponceDate"
+            formControlName="ResponceDate">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['ResponceDate'].invalid && (FormElement['ResponceDate'].dirty || FormElement['ResponceDate'].touched)">
+            Please enter a valid Responce Date.
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="Comment" class="form-label">Comment:</label>
+        <input type="text" class="form-control" id="Comment" placeholder="Enter Comment" name="Comment"
+            formControlName="Comment">
+        <div class="alert alert-danger my-1" role="alert"
+            *ngIf="FormElement['Comment'].invalid && (FormElement['Comment'].dirty || FormElement['Comment'].touched)">
+            Please enter a valid Comment.
+        </div>
+    </div>
+    <button type="submit" class="me-1 btn btn-primary" [disabled]="!productForm.valid">Submit</button>
+    <a href="product" class="me-1 btn btn-danger">Cancel</a>
+</form>

@@ -1,0 +1,188 @@
+<h4 class="my-4">Product View</h4>
+
+<div class="alert alert-success my-2" role="alert" *ngIf="isDeleted">
+    Product deleted Sucessfuly.
+</div>
+<a href="product" class="btn btn-primary">Go Back</a>
+<form class="my-3">
+    <h6>Filters:</h6>
+    <div class="row">
+        <div class="col">
+            <input [readonly]="!isInEditingMood" type="text" class="form-control" placeholder="Filter by ID/Ammount" [(ngModel)]="filterAmmount"
+                (keyup)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+            <select class="form-control" placeholder="Filter by Eligibility" [(ngModel)]="filterEligibility"
+                (change)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+                <option value="">All</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="B">C</option>
+                <option value="B">D</option>
+            </select>
+        </div>
+        <div class="col">
+            <label class="form-check-label">View Commented</label> &nbsp;
+            <input [readonly]="!isInEditingMood" type="checkbox" class="form-check-label" [(ngModel)]="filterViewCommented"
+                (change)="updateFilter($event)" [ngModelOptions]="{standalone: true}">
+        </div>
+    </div>
+</form>
+<ngx-datatable #table class="bootstrap" [rows]="rows" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force"
+    [headerHeight]="40" [summaryPosition]="'bottom'" [footerHeight]="40" [limit]="20" [rowHeight]="50"
+    [reorderable]="true" (activate)="onActivate($event)">
+    <ngx-datatable-column name="Date" prop="Date" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value | date:"yyyy-MM-dd"}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Docket" prop="Docket" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Id" prop="Id" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Line No" prop="LineNo" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="EMP" prop="EMP" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Sufix" prop="Sufix" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Steps" prop="Steps" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Eligibility" prop="Eligibility" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Amount" prop="Amount" [sortable]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Action" prop="Id">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template class="m-0 p-0">
+            <a href="#" (click)="Delete(value)">Delete</a>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-footer>
+        <ng-template ngx-datatable-footer-template let-rowCount="rowCount">
+            <div class="col-4 ps-3">{{ rowCount }} Rows</div>
+            <div class="col-8 text-end pe-3">
+                <button class="btn btn-sm btn-success me-1" (click)="exportDatas('xls')">Excel</button>
+                <button class="btn btn-sm btn-danger me-1" (click)="exportDatas('pdf')">PDF</button>
+            </div>
+        </ng-template>
+    </ngx-datatable-footer>
+</ngx-datatable>
+
+
+<div class="alert alert-success my-2" role="alert" *ngIf="formsubmited">
+    Product Saved Sucessfuly.
+</div>
+
+<div class="alert alert-danger my-2" role="alert" *ngIf="showError && errorMessage.length > 0">
+    {{ errorMessage }}
+</div>
+
+<form #myForm="ngForm" [formGroup]="productForm" (ngSubmit)="onSubmit(productForm)">
+    <div class="row mt-3">
+        <div class="col-8">
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <label for="Date" class="form-label">Date:</label>
+                    <input [readonly]="!isInEditingMood" type="date" class="form-control" id="Date" placeholder="Enter Date" name="Date"
+                        formControlName="Date">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['Date'].invalid && (FormElement['Date'].dirty || FormElement['Date'].touched))">
+                        Please enter a valid Date.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="Docket" class="form-label">Docket:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="Docket" placeholder="Enter Docket" name="Docket"
+                        formControlName="Docket">
+                    <div class="alert alert-danger my-1" role="alert"
+                    *ngIf="isInEditingMood && (FormElement['Docket'].invalid && (FormElement['Docket'].dirty || FormElement['Docket'].touched))">
+                        Please enter a valid category.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="LineNo" class="form-label">LineNo:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="LineNo" placeholder="Enter LineNo"
+                        name="LineNo" formControlName="LineNo">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['LineNo'].invalid && (FormElement['LineNo'].dirty || FormElement['LineNo'].touched))">
+                        Please enter a valid LineNo.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="EMP" class="form-label">EMP:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="EMP" placeholder="Enter EMP" name="EMP"
+                        formControlName="EMP">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['EMP'].invalid && (FormElement['EMP'].dirty || FormElement['EMP'].touched))">
+                        Please enter a valid EMP.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="Sufix" class="form-label">Sufix:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="Sufix" placeholder="Enter Sufix"
+                        name="Sufix" formControlName="Sufix">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['Sufix'].invalid && (FormElement['Sufix'].dirty || FormElement['Sufix'].touched))">
+                        Please enter a valid Sufix.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="Steps" class="form-label">Steps:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="Steps" placeholder="Enter Steps"
+                        name="Steps" formControlName="Steps">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['Steps'].invalid && (FormElement['Steps'].dirty || FormElement['Steps'].touched))">
+                        Please enter a valid Steps.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="Eligibility" class="form-label">Eligibility:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="Eligibility" placeholder="Enter Eligibility" name="Eligibility"
+                        formControlName="Eligibility">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['Eligibility'].invalid && (FormElement['Eligibility'].dirty || FormElement['Eligibility'].touched))">
+                        Please enter a valid Eligibility.
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="Amount" class="form-label">Amount:</label>
+                    <input [readonly]="!isInEditingMood" type="text" class="form-control" id="Amount" placeholder="Enter Amount" name="Amount"
+                        formControlName="Amount">
+                    <div class="alert alert-danger my-1" role="alert"
+                        *ngIf="isInEditingMood && (FormElement['Amount'].invalid && (FormElement['Amount'].dirty || FormElement['Amount'].touched))">
+                        Please enter a valid Amount.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <button type="button" class="me-1 btn btn-success" [disabled]="isInEditingMood"  (click)="isInEditingMood = true">Edit</button>
+            <button type="submit" class="me-1 btn btn-primary" [disabled]="!productForm.valid">Save</button>
+            <button type="button" class="me-1 btn btn-danger"  [disabled]="!isInEditingMood"  (click)="isInEditingMood = false;myForm.resetForm()">Cancel</button>
+        </div>
+    </div>
+</form>
