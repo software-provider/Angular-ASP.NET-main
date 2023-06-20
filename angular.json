@@ -10,7 +10,7 @@
           "style": "scss"
         }
       },
-      "root": "",
+      "root": "", 
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
